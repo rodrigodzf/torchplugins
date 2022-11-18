@@ -4,6 +4,12 @@ This repository contains a collection of plugins for loading pytorch models in M
 
 They can load different models, but they were developed to load the models used for [this project.](https://arxiv.org/abs/2210.15306)
 
+## Cloning
+
+```bash
+git clone --recursive git@github.com:rodrigodzf/torchplugins.git
+```
+
 ## Building
 
 From the root directory, run:
