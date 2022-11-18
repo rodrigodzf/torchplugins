@@ -1,6 +1,0 @@
-{
-    "files.associations": {
-        "*.html": "html",
-        "__mutex_base": "cpp"
-    }
-}
