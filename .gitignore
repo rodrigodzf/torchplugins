@@ -6,6 +6,8 @@ docs/
 externals/
 tests/
 .vscode/
+
+*.pt
 ### C++ ###
 # Prerequisites
 *.d
