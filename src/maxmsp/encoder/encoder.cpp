@@ -24,6 +24,17 @@ public:
 
 	outlet<>	output	{ this, "(list) result of convolution" };
 
+    message<> load { this, "load", "Load a model from a file",
+        MIN_FUNCTION {
+            if (args.size() == 1)
+            {
+                auto modelPath = std::string(args[0]);
+                loadModel(modelPath);
+            }
+            return {};
+        }
+    };
+
     attribute<int> width
     { 
         this,
@@ -68,6 +79,12 @@ public:
         MIN_FUNCTION {
             lock lock {m_mutex};
 
+            if (!m_loaded)
+            {
+                error("Model not loaded.");
+                return {};
+            }
+            
             std::vector<float> x = from_atoms<std::vector<float>>(args);
             if (m_output.size() != num_features)
             {
@@ -105,30 +122,34 @@ public:
         }
     };
 private:
+    void loadModel(const std::string &path);
+
+private:
+    bool m_loaded {false};
     std::mutex m_mutex;
     std::vector<float> m_output;
 };
 
-Encoder::Encoder(const atoms &args) {
-
-    if (args.empty()) {
-        error("Please provide a path to the model.");
-        return;
-    }
-
-    auto modelPath = std::string(args[0]);
-
-    // load model
-    if (0 == Model::getInstance().loadModel(modelPath, "cpu"))
+Encoder::Encoder(const atoms &args)
+{
+    if (!args.empty())
     {
-        cout << "model with path: " << modelPath << " loaded" << endl;
+        auto modelPath = std::string(args[0]);
+        loadModel(modelPath);
+    }
+}
+
+void Encoder::loadModel(const std::string &path)
+{
+    if (0 == Model::getInstance().loadModel(path, "cpu"))
+    {
+        cout << "model with path: " << path << " loaded" << endl;
+        m_loaded = true;
     }
     else
     {
-        cout << "model could not be loaded" << endl;
+        cout << "model with path: " << path << " could not be loaded" << endl;
     }
-
-
 }
 
 Encoder::~Encoder() {}

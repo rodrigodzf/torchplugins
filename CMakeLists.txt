@@ -51,7 +51,6 @@ find_package(Torch REQUIRED)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TORCH_CXX_FLAGS}")
 
 # Max SDK
-# Misc setup and subroutines
 # include(${CMAKE_CURRENT_SOURCE_DIR}/third_party/min-api/script/min-package.cmake)
 set(C74_MIN_API_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third_party/min-api)
 
@@ -60,6 +59,3 @@ add_subdirectory(src/common/torchwrapper)
 add_subdirectory(src/maxmsp/fc)
 add_subdirectory(src/maxmsp/encoder)
 add_subdirectory(src/maxmsp/filterbank_tilde)
-
-# Comment the line below if you want automatic cmake regneration enabled
-# set(CMAKE_SUPPRESS_REGENERATION true)

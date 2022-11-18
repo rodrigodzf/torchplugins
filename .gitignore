@@ -5,7 +5,7 @@ build/
 docs/
 externals/
 tests/
-
+.vscode/
 ### C++ ###
 # Prerequisites
 *.d
