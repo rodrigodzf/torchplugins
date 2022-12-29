@@ -40,11 +40,11 @@ if (APPLE)
     message("CMAKE_OSX_ARCHITECTURES: ${CMAKE_OSX_ARCHITECTURES}")
 endif()
 
-if (LINUX)
-    list(APPEND CMAKE_PREFIX_PATH "/media/fast/libs/libtorch-cxx11-abi-shared-with-deps-1.13.0+cu117/libtorch")
-elseif(APPLE)
-    list(APPEND CMAKE_PREFIX_PATH "/Users/diaz/mambaforge/envs/modal/lib/python3.10/site-packages/torch")
-endif()
+# if (LINUX)
+#     list(APPEND CMAKE_PREFIX_PATH "/media/fast/libs/libtorch-cxx11-abi-shared-with-deps-1.13.0+cu117/libtorch")
+# elseif(APPLE)
+#     list(APPEND CMAKE_PREFIX_PATH "/Users/diaz/mambaforge/envs/modal/lib/python3.10/site-packages/torch")
+# endif()
 
 # Torch
 find_package(Torch REQUIRED)
