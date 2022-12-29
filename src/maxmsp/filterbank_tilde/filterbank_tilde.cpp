@@ -24,25 +24,25 @@ public:
         MIN_FUNCTION {
             int n_parallel = m_filters.size();
             int n_biquads = m_filters[0].size();
-            std::vector<std::vector<double>> coefficients;
+            std::vector<atom> out_coeffs;
             for (int i = 0; i < n_parallel; i++)
             {
                 for (int j = 0; j < n_biquads; j++)
                 {
-                    std::vector<double> coeffs = m_filters[i][j].get_coefficients();
-                    coefficients.push_back(coeffs);
-
+                    auto coeffs = m_filters[i][j].get_coefficients();
+                    for (int k = 0; k < coeffs.size(); k++)
+                    {
+                        out_coeffs.push_back(atom(coeffs[k]));
+                    }
                 }
             }
 
-            std::vector<atom> coeffs = to_atoms(coefficients);
-            output_list.send(coeffs);
-
+            output_list.send(out_coeffs);
             return {};
         }
     };
 
-    message<> list { this, "list", "Input to the convolution function.",
+    message<> list { this, "list", "Coefficients for the filterbank.",
         MIN_FUNCTION 
         {
             lock lock {m_mutex};
