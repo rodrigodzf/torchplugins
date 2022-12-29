@@ -1,3 +1,5 @@
+# This workflow was adapted from https://github.com/acids-ircam/nn_tilde/blob/6bf5d38ac272df87107d9f2abbb73855e21b9e72/.github/workflows/build.yaml
+
 name: build
 on:
   push:

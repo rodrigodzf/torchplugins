@@ -32,3 +32,7 @@ An exemplary patcher is available in the `extras` directory. The patcher loads a
 The path to the models must be specified in Max settings.
 
 ### Unity
+
+### Related repositories
+
+[nn-tilde](https://github.com/acids-ircam/nn_tilde) - A Max/MSP, PureData external for loading pytorch models.
