@@ -15,10 +15,7 @@ git clone --recursive git@github.com:rodrigodzf/torchplugins.git
 From the root directory, run:
 
 ```bash
-mkdir build
-cd build
-cmake ..
-make -j
+sh ./bin/build.sh
 ```
 
 The plugins will be available in the `externals` directory. It is recommended to copy the plugins to the `externals` directory of your Max installation e.g `~/Documents/Max 8/Packages/torchplugins/externals`.
