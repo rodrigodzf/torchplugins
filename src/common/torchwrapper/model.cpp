@@ -71,3 +71,24 @@ void Model::process(
         std::exit(-1);
     }
 }
+
+void Model::callMethod(
+        const std::string &methodName,
+        float param
+)
+{
+    c10::InferenceMode guard;
+    try
+    {
+        std::vector<torch::jit::IValue> inputs;
+        inputs.push_back(param);
+        // Execute the model and turn its output into a tensor.
+        mNetwork.get_method(methodName)(inputs);
+    }
+    catch (const c10::Error &e)
+    {
+        // Return a value of -1 if the model fails to load
+        LOG_MSG("Error processing model: " << e.what());
+        std::exit(-1);
+    }
+}

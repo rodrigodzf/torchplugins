@@ -51,3 +51,13 @@ endif()
 #############################################################
 
 include(${C74_MIN_API_DIR}/test/min-object-unittest.cmake)
+target_link_libraries(
+    "${PROJECT_NAME}_test"
+    PUBLIC
+    torchwrapper
+)
+target_compile_options(
+    "${PROJECT_NAME}_test"
+    PUBLIC
+    -Wno-deprecated-declarations
+)

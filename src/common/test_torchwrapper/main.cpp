@@ -6,8 +6,6 @@ int main(int argc, char** argv)
     auto &model = Model::getInstance();
     model.loadModel("/Users/diaz/iir-extras/pretrained/model_wrap.pt", "cpu");
 
-    LOG_MSG("Model loaded successfully");
-
     std::vector<float> x = {
         -0.001436,-0.084742,-0.001168,0.009148,0.000078,0.000604,-0.000064,
         -0.000955,0.017789,-0.001886,0.018542,0.018337,-0.001704,0.009327,0.008669,

@@ -11,7 +11,7 @@ using namespace c74::min;
 
 class FC : public object<FC> {
 public:
-    MIN_DESCRIPTION	{"Encode an image to a vector of floats."};
+    MIN_DESCRIPTION	{"Loads and runs a NN."};
     MIN_TAGS		{"torch"};
     MIN_AUTHOR		{"Rodrigo Diaz"};
     MIN_RELATED		{"print"};
@@ -41,13 +41,27 @@ public:
         description {"Number of output features."},
     };
 
+    message<> set { this, "set", "Set a parameter of the model.",
+        MIN_FUNCTION {
+            if (args.size() == 2)
+            {
+                auto name = std::string(args[0]);
+                auto value = args[1];
+
+                lock lock {m_mutex};
+                Model::getInstance().callMethod(name, value);
+                lock.unlock();
+            }
+            return {};
+        }
+    };
     message<> list { this, "list", "Input to the network.",
         MIN_FUNCTION {
             lock lock {m_mutex};
 
             if (!m_loaded)
             {
-                error("Model not loaded.");
+                cout << "Model not loaded." << endl;
                 return {};
             }
 

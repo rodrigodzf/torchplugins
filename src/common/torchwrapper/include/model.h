@@ -40,4 +40,9 @@ public:
         torch::Tensor &inputTensor,
         float* output
     );
+
+    void callMethod(
+        const std::string &methodName,
+        float param
+    );
 };

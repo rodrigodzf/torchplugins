@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.19)
-project(torchplugins VERSION 0.1.0)
+project(torchplugins VERSION 0.1.1)
 message(STATUS "Version: ${PROJECT_VERSION}")
 
 enable_testing()
@@ -56,6 +56,7 @@ set(C74_MIN_API_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third_party/min-api)
 
 # Add subdirectories
 add_subdirectory(src/common/torchwrapper)
+add_subdirectory(src/common/test_torchwrapper)
 add_subdirectory(src/maxmsp/fc)
 add_subdirectory(src/maxmsp/encoder)
 add_subdirectory(src/maxmsp/filterbank_tilde)
