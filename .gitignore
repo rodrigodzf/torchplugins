@@ -4,6 +4,8 @@
 build/
 docs/
 externals/
+third_party/libtorch
+third_party/libtorch.zip
 tests/
 .vscode/
 
