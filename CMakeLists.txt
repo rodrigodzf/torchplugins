@@ -27,8 +27,8 @@ if (APPLE)
     endif()
 endif()
 
-
-set(CMAKE_CXX_STANDARD 20)
+# We need C++17 because torch is compiled with C++17
+set(CMAKE_CXX_STANDARD 17)
 # set(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
@@ -41,7 +41,7 @@ if (APPLE)
 endif()
 
 # if (LINUX)
-#     list(APPEND CMAKE_PREFIX_PATH "/media/fast/libs/libtorch-cxx11-abi-shared-with-deps-1.13.0+cu117/libtorch")
+# list(APPEND CMAKE_PREFIX_PATH "/media/fast/libs/libtorch-cxx11-abi-shared-with-deps-1.13.0+cu117/libtorch/share/cmake/Torch")
 # elseif(APPLE)
 #     list(APPEND CMAKE_PREFIX_PATH "/Users/diaz/mambaforge/envs/modal/lib/python3.10/site-packages/torch")
 # endif()
@@ -54,9 +54,22 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TORCH_CXX_FLAGS}")
 # include(${CMAKE_CURRENT_SOURCE_DIR}/third_party/min-api/script/min-package.cmake)
 set(C74_MIN_API_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third_party/min-api)
 
+# Argparse
+# set(FETCHCONTENT_BASE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third_party)
+include(FetchContent)
+FetchContent_Declare(
+    argparse
+    GIT_REPOSITORY https://github.com/p-ranav/argparse.git
+)
+FetchContent_MakeAvailable(argparse)
+
 # Add subdirectories
 add_subdirectory(src/common/torchwrapper)
 add_subdirectory(src/common/test_torchwrapper)
-add_subdirectory(src/maxmsp/fc)
-add_subdirectory(src/maxmsp/encoder)
-add_subdirectory(src/maxmsp/filterbank_tilde)
+
+# if apple or windows
+if (APPLE OR WIN32)
+    add_subdirectory(src/maxmsp/fc)
+    add_subdirectory(src/maxmsp/encoder)
+    add_subdirectory(src/maxmsp/filterbank_tilde)
+endif()

@@ -72,18 +72,27 @@ void Model::process(
     }
 }
 
+std::vector<std::string> Model::getMethods()
+{
+    std::vector<std::string> methods;
+    for (const auto &method : mNetwork.get_methods())
+    {
+        methods.push_back(method.name());
+    }
+    return methods;
+}
+
 void Model::callMethod(
-        const std::string &methodName,
-        float param
+    const std::string &methodName,
+    float param,
+    float* output
 )
 {
     c10::InferenceMode guard;
+
     try
     {
-        std::vector<torch::jit::IValue> inputs;
-        inputs.push_back(param);
-        // Execute the model and turn its output into a tensor.
-        mNetwork.get_method(methodName)(inputs);
+        mNetwork.get_method(methodName)({param});
     }
     catch (const c10::Error &e)
     {

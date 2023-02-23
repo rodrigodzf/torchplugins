@@ -7,5 +7,6 @@ target_link_libraries(
     ${EXE_NAME}
     PUBLIC
     torchwrapper
+    argparse
 )
 set_target_properties(${EXE_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")

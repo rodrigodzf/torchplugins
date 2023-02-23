@@ -41,8 +41,10 @@ public:
         float* output
     );
 
+    std::vector<std::string> getMethods();
     void callMethod(
         const std::string &methodName,
-        float param
+        float param,
+        float* output
     );
 };
