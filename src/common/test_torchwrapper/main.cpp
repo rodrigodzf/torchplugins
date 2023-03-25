@@ -3,6 +3,7 @@
 #include <argparse/argparse.hpp>
 #include <filesystem>
 #include <string>
+
 int main(int argc, char** argv)
 {
     argparse::ArgumentParser program("test_torchwrapper");

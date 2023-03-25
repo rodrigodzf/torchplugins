@@ -7,19 +7,20 @@
 
 class Model
 {
-
 private:
     Model() {}
+
 public:
     Model(Model const &) = delete;
     void operator=(Model const &) = delete;
+
 private:
     torch::jit::Module mNetwork;
 
 public:
     static Model &getInstance()
     {
-        static Model instance; // Guaranteed to be destroyed.
+        static Model instance;  // Guaranteed to be destroyed.
         return instance;
     }
 
@@ -36,15 +37,9 @@ public:
         const int width
     );
 
-    void process(
-        torch::Tensor &inputTensor,
-        float* output
-    );
+    void process(torch::Tensor &inputTensor, float *output);
 
     std::vector<std::string> getMethods();
-    void callMethod(
-        const std::string &methodName,
-        float param,
-        float* output
-    );
+
+    void callMethod(const std::string &methodName, float param);
 };

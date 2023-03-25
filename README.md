@@ -20,11 +20,15 @@ sh ./bin/build.sh
 
 The plugins will be available in the `externals` directory. It is recommended to copy the plugins to the `externals` directory of your Max installation e.g `~/Documents/Max 8/Packages/torchplugins/externals`.
 
+### Development
+
+It is useful to link the folder `torchplugins` to the packages directory of your Max installation e.g `~/Documents/Max 8/Packages`. This way, you can edit the source code and the changes will be reflected in Max.
+
 ## Usage
 
 ### Max/MSP
 
-An exemplary patcher is available in the `extras` directory. The patcher loads a model and runs inference on a given image. The pre-trained models can be downloaded from [here](https://drive.google.com/drive/folders/1dafuKfNBS-jLKJJZo5iVsO3d6K84xEmh?usp=share_link).
+An exemplary patcher is available in the `extras` directory. The patcher loads a model and runs inference on a given image.
 
 The path to the models must be specified in Max settings.
 
