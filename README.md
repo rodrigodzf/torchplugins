@@ -15,10 +15,10 @@ git clone --recursive git@github.com:rodrigodzf/torchplugins.git
 From the root directory, run:
 
 ```bash
-sh ./bin/build.sh
+sh ./bin/build.sh -r
 ```
 
-The plugins will be available in the `externals` directory. It is recommended to copy the plugins to the `externals` directory of your Max installation e.g `~/Documents/Max 8/Packages/torchplugins/externals`.
+The plugins will be available in the `torchplugins` directory. It is recommended to copy the folder `torchplugins` to the Package directory of your Max installation e.g `~/Documents/Max 8/Packages/torchplugins`.
 
 ### Development
 
