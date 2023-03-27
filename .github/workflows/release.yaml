@@ -1,0 +1,32 @@
+name: "tagged-release"
+
+on:
+  push:
+    tags:
+      - "*"
+
+jobs:
+  build:
+    uses: ./.github/workflows/build.yaml
+    with:
+        build_type: "Release"
+
+  tagged-release:
+    name: "Tagged Release"
+    runs-on: "ubuntu-latest"
+    needs: [build]
+
+    steps:
+      - name: Download build binaries
+        uses: actions/download-artifact@latest
+        with:
+          name: torchplugins
+
+      - name: "Create release"
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: false
+          files: |
+            torchplugins_macOS_x86_64.tar.gz
+            torchplugins_macOS_arm64.tar.gz
