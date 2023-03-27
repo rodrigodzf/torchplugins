@@ -143,6 +143,7 @@ SCENARIO("object produces correct output") {
                 -0.009836,0.010059,-0.001538,0.001922,-0.031893,0.008967,-0.008679,
                 -0.234851,0.000973,-0.000656,0.498047,0.441406,0.9,0.2,0.5,1.,0.01
         };
+
         atoms pz = to_atoms(x);
 
         fc.list(pz); // wont produce any out
@@ -150,11 +151,14 @@ SCENARIO("object produces correct output") {
         // REQUIRE(out.size() == 0);
 
         // Load a model
-        atom path("/Users/diaz/iir-extras/pretrained/model_wrap.pt");
+        atom path("extras/pretrained/model.pt");
         fc.load(path);
 
         // now proceed to testing various sequences of events
         WHEN("list is passed") {
+            //! We need to check that the input size equals the input size of the model
+            std::cout << "Input size: " << x.size() << std::endl;
+
             fc.list(pz); // will produce output
             THEN("will produce output") {
                 // TODO: This is not working
@@ -165,37 +169,5 @@ SCENARIO("object produces correct output") {
                 // REQUIRE((output[0][0] == symbol("hello world")));
             }
         }
-
-        // auto& output = *c74::max::object_getoutput(fc, 0);
-
-        // std::cout << output << std::endl;
-        // REQUIRE(output[0].size() == (32 * 2 * 6));
-
-        // REQUIRE(filterbank.m_filters.size() == 4);
-        // REQUIRE(filterbank.m_filters[0].size() == 2);
-
-        // WHEN("Receiving a list of coefficients")
-        // {
-        //     std::vector<float> coefficients = {
-        //         1.0, 0.1, 0.2, 1.0, 0.4, 0.5, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-        //         1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-        //         1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-        //         1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0
-        //     };
-        //     atoms coeffs = to_atoms(coefficients);
-
-        //     filterbank.list(coeffs);
-
-        //     std::cout << "filterbank.m_filters[0][0].get_coefficients() " << filterbank.m_filters[0][0].to_string() << std::endl;
-            
-
-        //     REQUIRE(filterbank.m_filters[0][0].get_coefficients()[0] == 1.0f);
-        //     REQUIRE(filterbank.m_filters[0][0].get_coefficients()[1] == 0.1f);
-        //     REQUIRE(filterbank.m_filters[0][0].get_coefficients()[2] == 0.2f);
-        //     REQUIRE(filterbank.m_filters[0][0].get_coefficients()[3] == 0.4f);
-        //     REQUIRE(filterbank.m_filters[0][0].get_coefficients()[4] == 0.5f);
-                
-        // }
-
     }
 }

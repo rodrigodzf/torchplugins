@@ -19,10 +19,8 @@ public:
     Encoder(const atoms &args = {});
     ~Encoder();
 
-	inlet<>		input	{ this, "(list) values to convolve" };
-    inlet<>		input2	{ this, "(matrix) Input", "matrix" };
-
-	outlet<>	output	{ this, "(list) result of convolution" };
+	inlet<>		input	{ this, "(list) input values" };
+	outlet<>	output	{ this, "(list) output" };
 
     message<> load { this, "load", "Load a model from a file",
         MIN_FUNCTION {

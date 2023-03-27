@@ -1,34 +1,36 @@
-# This workflow was adapted from https://github.com/acids-ircam/nn_tilde/blob/6bf5d38ac272df87107d9f2abbb73855e21b9e72/.github/workflows/build.yaml
-
 name: build
+
 on:
   push:
-    tags:
-      - "v*"
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+  workflow_call:
+    inputs:
+      build_type:
+        description: "The CMake build type to use"
+        required: false
+        default: "Release"
+        type: string
+
 jobs:
   arm64-build:
     runs-on: macos-latest
     steps:
+      
       - name: Check out code
-        uses: actions/checkout@v2
-      - run: git submodule update --init --recursive
-      - name: Setup torch
-        run: |
-          curl -L https://anaconda.org/pytorch/pytorch/1.13.1/download/osx-arm64/pytorch-1.13.1-py3.9_0.tar.bz2 | tar -xv
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
       - name: Build
         run: |
-          mkdir build
-          cd build
-          cmake .. -DCMAKE_PREFIX_PATH=${{ github.workspace }}/lib/python3.9/site-packages/torch -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES=arm64
-          make -j
+          bash bin/build.sh -r
+
       - name: Package creation
         run: |
-          mkdir torchplugins
-          mkdir torchplugins/help
-          mv externals torchplugins
-          cp src/maxmsp/fc/fc.maxhelp torchplugins/help
-          cp src/maxmsp/filterbank_tilde/filterbank~.maxhelp torchplugins/help
           tar -czvf torchplugins_macOS_arm64.tar.gz torchplugins
+
       - name: Upload binaries
         uses: actions/upload-artifact@v2
         with:
@@ -39,46 +41,20 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: Check out code
-        uses: actions/checkout@v2
-      - run: git submodule update --init --recursive
-      - name: Setup torch
-        run: |
-          curl -L https://download.pytorch.org/libtorch/cpu/libtorch-macos-1.13.1.zip -o libtorch.zip
-          unzip libtorch.zip
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
 
       - name: Build
         run: |
-          mkdir build
-          cd build
-          cmake .. -DCMAKE_PREFIX_PATH=${{ github.workspace }}/libtorch -DCMAKE_BUILD_TYPE=Release
-          make -j
+          bash bin/build.sh -r
+
       - name: Package creation
         run: |
-          mkdir torchplugins
-          mkdir torchplugins/help
-          mv externals torchplugins
-          cp src/maxmsp/fc/fc.maxhelp torchplugins/help
-          cp src/maxmsp/filterbank_tilde/filterbank~.maxhelp torchplugins/help
           tar -czvf torchplugins_macOS_x86_64.tar.gz torchplugins
+
       - name: Upload binaries
         uses: actions/upload-artifact@v2
         with:
           name: torchplugins
           path: torchplugins_macOS_x86_64.tar.gz
-
-  AutomaticRelease:
-    runs-on: ubuntu-latest
-    needs: [arm64-build, x86_64-build]
-    steps:
-      - name: Download build binaries
-        uses: actions/download-artifact@v2
-        with:
-          name: torchplugins
-      - name: Automated Release
-        uses: "marvinpinto/action-automatic-releases@latest"
-        with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          prerelease: false
-          files: |
-            torchplugins_macOS_x86_64.tar.gz
-            torchplugins_macOS_arm64.tar.gz

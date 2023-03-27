@@ -1,0 +1,19 @@
+{
+	"author" : "Rodrigo Diaz",
+	"description" : "Lightweight reference implementation of a package built using the Min-API.",
+	"homepatcher" : "",
+	"max_version_min" : "8.0", "max_version_max" : "none",
+	"name" : "@C74_PACKAGE_NAME@",
+	"os" : {
+		"macintosh" : {
+			"platform" : [ "x64", "arm64" ],
+			"min_version" : "none"
+		},
+	},
+	"package_extra" : {
+		"copyright" : "Copyright (c) 2023 Rodrigo Diaz"
+	},
+	"tags" : [ ],
+	"version" : "@GIT_VERSION_MAJ@.@GIT_VERSION_MIN@.@GIT_VERSION_SUB@",
+	"website" : "https://github.com/rodrigodzf/torchplugins"
+}

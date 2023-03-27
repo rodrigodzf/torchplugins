@@ -5,7 +5,7 @@ int Model::loadModel(
     const std::string &modelPath,
     const std::string &deviceString
 )
-{   
+{
     auto device = torch::Device(deviceString);
     try
     {
@@ -34,21 +34,18 @@ torch::Tensor Model::toTensor(
     const int width
 )
 {
-   // Create a vector of inputs.
+    // Create a vector of inputs.
     auto options = torch::TensorOptions().dtype(torch::kFloat);
     auto tensor = torch::from_blob(
-        input, 
-        {batchSize, channels, height, width}, 
+        input,
+        {batchSize, channels, height, width},
         options
     );
 
     return tensor;
 }
 
-void Model::process(
-    torch::Tensor &inputTensor,
-    float* output
-)
+void Model::process(torch::Tensor &inputTensor, float *output)
 {
     c10::InferenceMode guard;
 
@@ -62,7 +59,11 @@ void Model::process(
         auto outputTensor = mNetwork.forward(inputs).toTensor();
 
         // Copy the tensor data to the output array
-        memcpy(output, outputTensor.data_ptr(), outputTensor.numel() * sizeof(float));
+        memcpy(
+            output,
+            outputTensor.data_ptr(),
+            outputTensor.numel() * sizeof(float)
+        );
     }
     catch (const c10::Error &e)
     {
@@ -82,11 +83,7 @@ std::vector<std::string> Model::getMethods()
     return methods;
 }
 
-void Model::callMethod(
-    const std::string &methodName,
-    float param,
-    float* output
-)
+void Model::callMethod(const std::string &methodName, float param)
 {
     c10::InferenceMode guard;
 
