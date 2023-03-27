@@ -18,7 +18,7 @@ jobs:
 
     steps:
       - name: Download build binaries
-        uses: actions/download-artifact@latest
+        uses: actions/download-artifact@v3
         with:
           name: torchplugins
 
