@@ -1,6 +1,6 @@
 #include "c74_min.h"
 
-#include "model.h"
+#include "PytorchFrontend.h"
 #include "log.h"
 
 #ifndef VERSION
@@ -27,7 +27,9 @@ public:
             if (args.size() == 1)
             {
                 auto modelPath = std::string(args[0]);
-                loadModel(modelPath);
+                if (!nn->load(modelPath)) {
+                    cerr << "Model not loaded." << endl;
+                }
             }
             return {};
         }
@@ -37,7 +39,7 @@ public:
     { 
         this,
         "out_features",
-        32 * 2 * 6,
+        32 * 1 * 6,
         description {"Number of output features."},
     };
 
@@ -65,24 +67,17 @@ public:
                 return {};
             }
 
-            std::vector<float> x = from_atoms<std::vector<float>>(args);
+            std::vector<float> features = from_atoms<std::vector<float>>(args);
             if (m_output.size() != out_features)
             {
                 m_output.resize(out_features);
             }
 
-            auto tensor = Model::getInstance().toTensor(
-                x.data(),
-                1,
-                1,
-                1,
-                x.size()
-            );
+            nn->process(features, g_coords);
 
-            Model::getInstance().process(
-                tensor,
-                m_output.data()
-            );
+            nn->scale(g_scaling);
+
+            m_output = nn->coefficients;
 
             lock.unlock();
             output.send(to_atoms(m_output));
@@ -104,11 +99,22 @@ private:
 private:
     bool m_loaded {false};
     std::mutex m_mutex;
+    std::unique_ptr<PytorchFrontend> nn;
     std::vector<float> m_output;
+    std::vector<float> g_coords {0.70238614, 0.4862546};
+    std::vector<float> g_scaling {
+		1.0F,			   // scale factor
+		15000.0F,		   // rho
+		8000000000.0F,	   // E
+		1.0F,			   // alpha
+		0.0000003F,		   // beta
+		1.0F / 32000.0F	   // sampling period
+	};
 };
 
 FC::FC(const atoms &args)
 {
+    nn = std::make_unique<PytorchFrontend>();
     if (!args.empty())
     {
         auto modelPath = std::string(args[0]);
