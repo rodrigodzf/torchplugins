@@ -80,6 +80,10 @@ if [[ "$uname" == "Darwin" ]] && [[ "$arch" == "arm64" ]]; then
     fi
 fi
 
-cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=./third_party/libtorch
+cmake -B build \
+-DCMAKE_BUILD_TYPE=$build_type \
+-DCMAKE_PREFIX_PATH="./third_party/libtorch" \
+-DFFTW_ROOT="/opt/homebrew/Cellar/fftw/3.3.10_1"
+
 cmake --build build -j
 cmake --install build

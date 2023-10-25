@@ -72,7 +72,7 @@ public:
 
         torch::Tensor geometrical_features = torch::from_blob(
             feature_vector.data(),
-            {1, feature_vector.size()},
+            {1, static_cast<long long>(feature_vector.size())},
             options
         );
 

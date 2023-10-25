@@ -45,9 +45,15 @@ if(APPLE)
     message("CMAKE_OSX_ARCHITECTURES: ${CMAKE_OSX_ARCHITECTURES}")
 endif()
 
+# set module path
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+
 # Torch
 find_package(Torch REQUIRED)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TORCH_CXX_FLAGS}")
+
+# FFTW
+find_package(FFTW REQUIRED)
 
 # Max SDK
 # include(${CMAKE_CURRENT_SOURCE_DIR}/third_party/min-api/script/min-package.cmake)

@@ -1,4 +1,4 @@
-# Torchplugins
+# Neural Resonator for Max/MSP
 
 This repository contains a collection of plugins for loading pytorch models in Max/MSP, Unity and other engines/frameworks.
 
@@ -25,6 +25,12 @@ The plugins will be available in the `torchplugins` directory. It is recommended
 It is useful to link the folder `torchplugins` to the packages directory of your Max installation e.g `~/Documents/Max 8/Packages`. This way, you can edit the source code and the changes will be reflected in Max.
 
 ## Usage
+
+It is required to install the fftw3 library. On macOS, it can be installed with homebrew:
+
+```bash
+brew install fftw
+```
 
 ### Max/MSP
 
