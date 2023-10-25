@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "c74_min.h"
 
 #include "PytorchFrontend.h"
@@ -21,6 +22,7 @@ public:
     ~FC();
 
 	inlet<>		points	{ this, "(list) flattened points", "list" };
+    inlet<>		pos  	{ this, "(list) excitation position", "list" };
 	inlet<>		scaling	{ this, "(list) scaling", "list" };
 	outlet<>	output	{ this, "(list) features" };
     
@@ -75,7 +77,7 @@ public:
             // left inlet is for the geometry
             if (inlet == 0)
             {
-                std::vector<float> points = from_atoms<std::vector<float>>(args);
+                auto points = from_atoms<std::vector<float>>(args);
 
                 for (int i = 0; i < 64; i++)
                 {
@@ -85,15 +87,22 @@ public:
 
                 fft->fft_magnitude(points_x, points_y);
 
-                std::vector<float> features(
+                std::copy(
                     std::begin(fft->mag),
-                    std::end(fft->mag)
+                    std::end(fft->mag),
+                    std::begin(g_features)
                 );
 
-                nn->process(features, g_coords);
+                nn->process(g_features, g_coords);
                 nn->scale(g_scaling);
             }
-            else // right inlet is for the scaling
+            else if (inlet == 1) // middle inlet is for the excitation position
+            {
+                g_coords = from_atoms<std::vector<float>>(args);
+                nn->process(g_features, g_coords);
+                nn->scale(g_scaling);
+            }
+            else if (inlet == 2) // right inlet is for the scaling
             {
                 g_scaling = from_atoms<std::vector<float>>(args);
                 g_scaling[2] = g_scaling[2] * 1e+9F; // Young's modulus from GPa to Pa
@@ -130,6 +139,7 @@ private:
     FixedPointsArray points_y;
 
     std::vector<float> m_output;
+    std::vector<float> g_features;
     std::vector<float> g_coords {0.70238614, 0.4862546};
     std::vector<float> g_scaling {
 		1.0F,			   // scale factor
@@ -145,6 +155,7 @@ FC::FC(const atoms &args)
 {
     nn = std::make_unique<PytorchFrontend>();
     fft = std::make_unique<ShapeFFT>();
+    g_features.resize(64);
 
     if (!args.empty())
     {
